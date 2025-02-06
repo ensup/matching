@@ -13,10 +13,15 @@ class QueueList(list):
 class Sys:
     def __init__(self):
         self.players = []
-    def add_player(self):
-        self.players.append(Player())
+        self.queue = QueueList()
+    def add_player(self,score):
+        self.players.append(Player(score))
+    def add_queue(self):
+        for player in self.players:
+            self.queue.enqueue(player)
 class Player:
-    def __init__(self):
+    def __init__(self, score):
         tmp=np.random.normal()
-        self.init_score = tmp
-        self.score = tmp
+        self.init_score = score
+        self.score = score
+        self.time = 0
