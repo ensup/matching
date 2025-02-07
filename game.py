@@ -32,6 +32,9 @@ class Player:
         self.score = score
         self.time = 0
 def match(players:tuple,game:Sys):
+    """
+    Input: Tuple(Player, Player), Sys
+    """
     print('Test')
     p1, p2 = players
     #승패 가르기
