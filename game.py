@@ -35,7 +35,6 @@ def match(players:tuple,game:Sys):
     """
     Input: Tuple(Player, Player), Sys
     """
-    print('Test')
     p1, p2 = players
     #승패 가르기
     #점수 반영하기
