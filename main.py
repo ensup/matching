@@ -8,3 +8,5 @@ if __name__ == '__main__':
         lol.add_player(score)
     for player in lol.players:
         lol.queue.enqueue(player)
+    game.match()
+    print()

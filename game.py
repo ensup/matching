@@ -19,9 +19,22 @@ class Sys:
     def add_queue(self):
         for player in self.players:
             self.queue.enqueue(player)
+    def matchmake(self):
+        idx = self.queue.find_optimal()
+        player2 = self.queue[idx]
+        del self.queue[idx]
+        player1 = self.queue.dequeue()
+        return player1, player2
+
 class Player:
     def __init__(self, score):
-        tmp=np.random.normal()
         self.init_score = score
         self.score = score
         self.time = 0
+def match(players:tuple,game:Sys):
+    print('Test')
+    p1, p2 = players
+    #승패 가르기
+    #점수 반영하기
+    game.queue.enqueue(p1) #Add to Queue
+    game.queue.enqueue(p2)
