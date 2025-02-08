@@ -9,23 +9,21 @@ class QueueList(list): #class for List + Queue
         for i in range(2, len(self)):
             if abs(self[i].score-self[0].score) < abs(self[idx].score-self[0].score):
                 idx = i
-                #print(i,'인덱스')
-        print(idx)
         return idx
 class Sys: #Class of game system
     def __init__(self):
         self.players = []
         self.queue = QueueList()
-        self.system_time = 1  # 변수명 변경
+        self.system_time = 0
     def add_player(self,score):
         self.players.append(Player(score))
     def add_queue(self):
+        self.system_time += 1
         for player in self.players:
             if (player not in self.queue and (self.system_time >= player.std_time and self.system_time <= player.end_time
                 or player.std_time > player.end_time and self.system_time <= player.end_time)):
                 self.queue.enqueue(player)
                 print(f"Player ID {self.players.index(player)} added to queue at system time {self.system_time}")  # 디버깅 출력 추가
-        self.system_time += 1  # 변수명 변경
     def match(self):
         while len(self.queue) > 2:
             idx = self.queue.find_optimal()
