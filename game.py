@@ -1,5 +1,4 @@
-import numpy as np
-class QueueList(list):
+class QueueList(list): #class for List + Queue
     def enqueue(self, item):
         self.append(item)
     def dequeue(self):
@@ -10,7 +9,7 @@ class QueueList(list):
             if self[i]-self[0] < self[idx]-self[0]:
                 idx = i
         return idx
-class Sys:
+class Sys: #Class of game system
     def __init__(self):
         self.players = []
         self.queue = QueueList()
@@ -26,11 +25,15 @@ class Sys:
         player1 = self.queue.dequeue()
         return player1, player2
 
-class Player:
+class Player: #Save player data
     def __init__(self, score):
         self.init_score = score
         self.score = score
         self.time = 0
+    def __str__(self):
+        data = 'Initial score: ' + str(self.init_score) + ', Current score: ' + str(self.score) + \
+            ', Played time: ' + str(self.time)
+        return data
 def match(players:tuple,game:Sys):
     """
     Input: Tuple(Player, Player), Sys
