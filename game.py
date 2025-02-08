@@ -31,6 +31,8 @@ class Player: #Save player data
         self.init_score = score
         self.score = score
         self.time = 0
+        self.std_time = random.randint(1, 24)
+        self.end_time = random.randint(1, 24)
     def __str__(self):
         data = 'Initial score: ' + str(self.init_score) + ', Current score: ' + str(int(self.score)) + \
             ', Played time: ' + str(self.time)
@@ -67,8 +69,8 @@ def export_txt(list):
             i+=1
 def export_csv(list):
     with open('output.csv', 'w') as f:
-        f.write('ID,Initial Score,Current Score,Played Time\n')
+        f.write('ID,Initial Score,Current Score,Played Time,PlayingTimeStart,PlayingTimeEnd\n')
         i=0
         for item in list:
-            f.write("%d,%d,%d,%d\n" % (i, item.init_score, item.score, item.time))
+            f.write("%d,%d,%d,%d\n" % (i, item.init_score, item.score, item.time, item.std_time, item.end_time))
             i+=1
