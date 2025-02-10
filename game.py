@@ -12,7 +12,6 @@ class QueueList(list):
         for i in range(2, len(self)):
             if abs(self[i].score-self[0].score) < abs(self[idx].score-self[0].score):
                 idx = i
-        print(idx)
         return idx
 class GameSys:
     """
@@ -26,7 +25,7 @@ class GameSys:
         self.players.append(Player(score))
     def add_queue(self):
         for player in self.players:
-            if player.is_available():
+            if player.is_available(self):
                 self.queue.enqueue(player)
                 print(f"Player ID {self.players.index(player)} added to queue at system time {self.system_time}")  # 디버깅 출력 추가
         self.system_time += 1  # 변수명 변경
@@ -100,5 +99,5 @@ def export_csv(lst):
         f.write('ID,Initial Score,Current Score,Played Time,PlayingTimeStart,PlayingTimeEnd\n')
         i=0
         for item in lst:
-            f.write("%d,%d,%d,%d,%d,%d\n" % (i, item.init_score, item.score, item.time, item.std_time, item.end_time))
+            f.write("%d,%d,%d,%d,%d,%d\n" % (i, item.init_score, item.score, item.time, item.stt_time, item.end_time))
             i+=1
