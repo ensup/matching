@@ -21,7 +21,7 @@ class GameSys:
     def __init__(self):
         self.players = []
         self.queue = QueueList()
-        self.system_time = 1  # 변수명 변경
+        self.system_time = 0
     def add_player(self,score):
         self.players.append(Player(score))
     def add_queue(self):
