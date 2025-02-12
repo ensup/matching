@@ -24,11 +24,11 @@ class GameSys:
     def add_player(self,score):
         self.players.append(Player(score))
     def add_queue(self):
+        self.system_time += 1
         for player in self.players:
             if player.is_available(self):
                 self.queue.enqueue(player)
                 print(f"Player ID {self.players.index(player)} added to queue at system time {self.system_time}")  # 디버깅 출력 추가
-        self.system_time += 1  # 변수명 변경
     def match(self):
         while len(self.queue) > 2:
             idx = self.queue.find_optimal()
