@@ -10,3 +10,4 @@ if __name__ == '__main__':
         lol.add_queue()
         lol.match()
     game.export_csv(lol.players)
+    lol.save_log()
