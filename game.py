@@ -1,19 +1,23 @@
 import random
 import math
+
 class QueueList(list):
     """
     class for List + Queue
     """
     def enqueue(self, item):
         self.append(item)
+
     def dequeue(self):
         return self.pop(0)
+    
     def find_optimal(self):
         idx = 1
         for i in range(2, len(self)):
             if abs(self[i].score-self[0].score) < abs(self[idx].score-self[0].score):
                 idx = i
         return idx
+
 
 class GameSys:
     """
@@ -24,8 +28,10 @@ class GameSys:
         self.queue = QueueList()
         self.system_time = 0
         self.system_log = []
+
     def add_player(self,score):
         self.players.append(Player(score,len(self.players)))
+    
     def add_queue(self):
         self.system_time += 1
         for player in self.players:
@@ -33,6 +39,7 @@ class GameSys:
                 self.queue.enqueue(player)
                 msg = f"Player ID {player.id} added to queue at system time {self.system_time}"
                 self.add_to_log(msg)
+
     def match(self):
         while len(self.queue) > 2:
             idx = self.queue.find_optimal()
@@ -42,16 +49,21 @@ class GameSys:
             msg = f"Matched Player ID {player1.id} and Player ID {player2.id} at system time {self.system_time}"
             self.add_to_log(msg)
             do_match((player1, player2))
+
     def get_time(self):
         return self.system_time
+    
     def is_in_queue(self, player):
         return player in self.queue
+    
     def add_to_log(self, logdata):
         self.system_log.append(logdata)
+
     def save_log(self):
         with open('log.txt', 'w') as f:
             for log in self.system_log:
                 f.write(log + '\n')
+
 
 class Player:
     """
@@ -64,29 +76,37 @@ class Player:
         self.stt_time = random.randint(1, 24)
         self.end_time = random.randint(1, 24)
         self.id = id
+
     def __str__(self):
         data = 'Initial score: ' + str(self.init_score) + ', Current score: ' + str(int(self.score)) + \
             ', Played time: ' + str(self.time)
         return data
+    
     def is_available(self, game):
         system_time = game.get_time()
         return not game.is_in_queue(self) and self.in_time(system_time)
+    
     def in_time(self,system_time):
         res = (self.stt_time <= system_time <= self.end_time
                 or self.stt_time > self.end_time >= system_time
                 or self.end_time < self.stt_time <= system_time <= 24)
         return res
+    
     def get_score(self):
         return self.score
+    
     def add_score(self, score):
         self.score += score
+    
     def add_played_time(self):
         self.time += 1
     
+    """
     class SimTime():
         def __init__(self):
             self.hour = 0
             self.minute = 0
+    """
 
 def do_match(players:tuple):
     """
