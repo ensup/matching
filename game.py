@@ -46,7 +46,7 @@ class GameSys:
             player2 = self.queue[idx]
             del self.queue[idx]
             player1 = self.queue.dequeue()
-            msg = f"Matched Player ID {player1.id} and Player ID {player2.id} at system time {self.system_time}"
+            msg = f"Matched Player ID {player1.id} and Player ID {player2.id} (differ: {abs(player1.score-player2.score)}) at system time {self.system_time}"
             self.add_to_log(msg)
             do_match((player1, player2))
 
