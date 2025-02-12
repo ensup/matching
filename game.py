@@ -21,6 +21,7 @@ class GameSys:
         self.players = []
         self.queue = QueueList()
         self.system_time = 0
+        self.system_log = []
     def add_player(self,score):
         self.players.append(Player(score))
     def add_queue(self):
@@ -28,19 +29,27 @@ class GameSys:
         for player in self.players:
             if player.is_available(self):
                 self.queue.enqueue(player)
-                print(f"Player ID {self.players.index(player)} added to queue at system time {self.system_time}")  # 디버깅 출력 추가
+                msg = f"Player ID {self.players.index(player)} added to queue at system time {self.system_time}"
+                self.add_to_log(msg)
     def match(self):
         while len(self.queue) > 2:
             idx = self.queue.find_optimal()
             player2 = self.queue[idx]
             del self.queue[idx]
             player1 = self.queue.dequeue()
-            print(f"Matched Player ID {self.players.index(player1)} and Player ID {self.players.index(player2)} at system time {self.system_time}")  # 디버깅 출력 추가
+            msg = f"Matched Player ID {self.players.index(player1)} and Player ID {self.players.index(player2)} at system time {self.system_time}"
+            self.add_to_log(msg)
             do_match((player1, player2))
     def get_time(self):
         return self.system_time
     def is_in_queue(self, player):
         return player in self.queue
+    def add_to_log(self, logdata):
+        self.system_log.append(logdata)
+    def save_log(self):
+        with open('log.txt', 'w') as f:
+            for log in self.system_log:
+                f.write(log + '\n')
 
 class Player:
     """
