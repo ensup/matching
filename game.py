@@ -25,7 +25,7 @@ class GameSys:
         self.system_time = 0
         self.system_log = []
     def add_player(self,score):
-        self.players.append(Player(score))
+        self.players.append(Player(score,len(self.players)))
     def add_queue(self):
         self.system_time += 1
         for player in self.players:

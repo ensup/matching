@@ -4,10 +4,8 @@ if __name__ == '__main__':
     lol = game.GameSys()
     player_num = 15000
     random_numbers = np.random.normal(loc=1500, scale=500, size=player_num)
-    i=0
     for score in random_numbers:
         lol.add_player(int(score))
-        i+=1
     for _ in range(24):
         lol.add_queue()
         lol.match()
