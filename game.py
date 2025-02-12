@@ -31,7 +31,7 @@ class GameSys:
         for player in self.players:
             if player.is_available(self):
                 self.queue.enqueue(player)
-                msg = f"Player ID {self.players.index(player)} added to queue at system time {self.system_time}"
+                msg = f"Player ID {player.id} added to queue at system time {self.system_time}"
                 self.add_to_log(msg)
     def match(self):
         while len(self.queue) > 2:
@@ -39,7 +39,7 @@ class GameSys:
             player2 = self.queue[idx]
             del self.queue[idx]
             player1 = self.queue.dequeue()
-            msg = f"Matched Player ID {self.players.index(player1)} and Player ID {self.players.index(player2)} at system time {self.system_time}"
+            msg = f"Matched Player ID {player1.id} and Player ID {player2.id} at system time {self.system_time}"
             self.add_to_log(msg)
             do_match((player1, player2))
     def get_time(self):
@@ -57,12 +57,13 @@ class Player:
     """
     Save player data
     """
-    def __init__(self, score):
+    def __init__(self, score, id):
         self.init_score = score
         self.score = score
         self.time = 0
         self.stt_time = random.randint(1, 24)
         self.end_time = random.randint(1, 24)
+        self.id = id
     def __str__(self):
         data = 'Initial score: ' + str(self.init_score) + ', Current score: ' + str(int(self.score)) + \
             ', Played time: ' + str(self.time)
@@ -112,10 +113,8 @@ def do_match(players:tuple):
 def export_csv(lst):
     with open('output.csv', 'w') as f:
         f.write('ID,Initial Score,Current Score,Played Time,PlayingTimeStart,PlayingTimeEnd\n')
-        i=0
         for item in lst:
-            f.write("%d,%d,%d,%d,%d,%d\n" % (i, item.init_score, item.score, item.time, item.stt_time, item.end_time))
-            i+=1
+            f.write("%d,%d,%d,%d,%d,%d\n" % (item.id, item.init_score, item.score, item.time, item.stt_time, item.end_time))
 
 def match_time(player1, player2):
     """
