@@ -81,6 +81,11 @@ class Player:
         self.score += score
     def add_played_time(self):
         self.time += 1
+    
+    class SimTime():
+        def __init__(self):
+            self.hour = 0
+            self.minute = 0
 
 def do_match(players:tuple):
     """
