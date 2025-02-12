@@ -77,6 +77,10 @@ class Player:
         return res
     def get_score(self):
         return self.score
+    def add_score(self, score):
+        self.score += score
+    def add_played_time(self):
+        self.time += 1
 
 def do_match(players:tuple):
     """
@@ -84,21 +88,21 @@ def do_match(players:tuple):
     """
     p1, p2 = players
     #승률 계산
-    prob1 = 1 / (1 + 10 ** ((p2.score - p1.score) / 400))
+    prob1 = 1 / (1 + 10 ** ((p2.get_score() - p1.get_score()) / 400))
     prob2 = 1 - prob1
     # Update the Elo ratings
     k=32
     if random.random() < prob1:
         # Player1 wins
-        p1.score += k * (1 - prob1)
-        p2.score += k * (0 - prob2)
+        p1.add_score(k * (1 - prob1))
+        p2.add_score(k * (0 - prob2))
     else:
         # Player2 wins
-        p1.score += k * (0 - prob1)
-        p2.score += k * (1 - prob2)
+        p1.add_score(k * (0 - prob1))
+        p2.add_score(k * (1 - prob2))
     # Update the time
-    p1.time += 1
-    p2.time += 1
+    p1.add_played_time()
+    p2.add_played_time()
     
 def export_csv(lst):
     with open('output.csv', 'w') as f:
