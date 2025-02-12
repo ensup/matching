@@ -1,4 +1,5 @@
 import random
+import math
 class QueueList(list):
     """
     class for List + Queue
@@ -73,6 +74,8 @@ class Player:
                 or self.stt_time > self.end_time >= system_time
                 or self.end_time < self.stt_time <= system_time <= 24)
         return res
+    def get_score(self):
+        return self.score
 
 def do_match(players:tuple):
     """
@@ -110,3 +113,11 @@ def export_csv(lst):
         for item in lst:
             f.write("%d,%d,%d,%d,%d,%d\n" % (i, item.init_score, item.score, item.time, item.stt_time, item.end_time))
             i+=1
+def match_time(player1, player2):
+    """
+    Calculate the match time (in minutes) based on the score difference.
+    """
+    score_def = abs(player1.get_score()-player2.get_score())
+    log_data = math.log10(5*score_def+1)
+    match_time = 45-10*(log_data)
+    return int(match_time)
