@@ -14,6 +14,7 @@ class QueueList(list):
             if abs(self[i].score-self[0].score) < abs(self[idx].score-self[0].score):
                 idx = i
         return idx
+
 class GameSys:
     """
     Class of game system
@@ -98,14 +99,7 @@ def do_match(players:tuple):
     # Update the time
     p1.time += 1
     p2.time += 1
-'''
-def export_txt(list):
-    with open('output.txt', 'w') as f:
-        i=0
-        for item in list:
-            f.write("Player %d: %s\n" % (i, item))
-            i+=1
-'''
+    
 def export_csv(lst):
     with open('output.csv', 'w') as f:
         f.write('ID,Initial Score,Current Score,Played Time,PlayingTimeStart,PlayingTimeEnd\n')
@@ -113,6 +107,7 @@ def export_csv(lst):
         for item in lst:
             f.write("%d,%d,%d,%d,%d,%d\n" % (i, item.init_score, item.score, item.time, item.stt_time, item.end_time))
             i+=1
+
 def match_time(player1, player2):
     """
     Calculate the match time (in minutes) based on the score difference.
