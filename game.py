@@ -11,19 +11,22 @@ class QueueList(list):
     def dequeue(self):
         return self.pop(0)
     
+    ''' 
     def find_optimal(self):
         idx = 1
         for i in range(2, len(self)):
             if abs(self[i].score-self[0].score) < abs(self[idx].score-self[0].score):
                 idx = i
         return idx
+    '''
 
 
 class GameSys:
     """
     Class of game system
     """
-    def __init__(self):
+    def __init__(self, matching_algorithm):
+        self.find_optimal = matching_algorithm
         self.players = []
         self.queue = QueueList()
         self.system_time = 0
@@ -42,7 +45,7 @@ class GameSys:
 
     def match(self):
         while len(self.queue) > 2:
-            idx = self.queue.find_optimal()
+            idx = self.find_optimal()
             player2 = self.queue[idx]
             del self.queue[idx]
             player1 = self.queue.dequeue()
