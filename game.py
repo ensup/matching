@@ -31,6 +31,7 @@ class GameSys:
         self.queue = QueueList()
         self.system_time = 0
         self.system_log = []
+        self.match_log = []
 
     def add_player(self,score):
         self.players.append(Player(score,len(self.players)))
@@ -42,15 +43,21 @@ class GameSys:
                 self.queue.enqueue(player)
                 msg = f"Player ID {player.id} added to queue at system time {self.system_time}"
                 self.add_to_log(msg)
+                player.update_enqueued_time(self.system_time)
 
     def match(self):
         while len(self.queue) > 2:
-            idx = self.find_optimal()
+            idx = self.find_optimal(self.queue)
+            if idx == -1:
+                return
             player2 = self.queue[idx]
             del self.queue[idx]
             player1 = self.queue.dequeue()
             msg = f"Matched Player ID {player1.id} and Player ID {player2.id} (differ: {abs(player1.score-player2.score)}) at system time {self.system_time}"
             self.add_to_log(msg)
+            p1_time_waited = self.system_time-player1.get_enqueued_time()
+            p2_time_waited = self.system_time-player2.get_enqueued_time()
+            self.add_match_log(abs(player1.score-player2.score), p1_time_waited, p2_time_waited)
             do_match((player1, player2))
 
     def get_time(self):
@@ -62,10 +69,13 @@ class GameSys:
     def add_to_log(self, logdata):
         self.system_log.append(logdata)
 
-    def save_log(self):
-        with open('log.txt', 'w') as f:
+    def save_log(self, filename='game_log'):
+        filename += '.log'
+        with open(filename, 'w') as f:
             for log in self.system_log:
                 f.write(log + '\n')
+    def add_match_log(self, differ:int, times_waited_p1,times_waited_p2):
+        self.match_log.append((differ, times_waited_p1, times_waited_p2))
 
 
 class Player:
@@ -79,6 +89,7 @@ class Player:
         self.stt_time = random.randint(1, 24)
         self.end_time = random.randint(1, 24)
         self.id = id
+        self.enqueued_time = 30
 
     def __str__(self):
         data = 'Initial score: ' + str(self.init_score) + ', Current score: ' + str(int(self.score)) + \
@@ -103,7 +114,10 @@ class Player:
     
     def add_played_time(self):
         self.time += 1
-    
+    def update_enqueued_time(self,t):
+        self.enqueued_time = t
+    def get_enqueued_time(self):
+        return self.enqueued_time
     """
     class SimTime():
         def __init__(self):
@@ -120,21 +134,30 @@ def do_match(players:tuple):
     prob1 = 1 / (1 + 10 ** ((p2.get_score() - p1.get_score()) / 400))
     prob2 = 1 - prob1
     # Update the Elo ratings
-    k=32
+    if p1.time > 10: # If player1 has played more than 10 games, k1 = 32, else k1 = 64
+        k1 = 32
+    else:
+        k1 = 64
+    if p2.time > 10: # If player2 has played more than 10 games, k2 = 32, else k2 = 64
+        k2 = 32
+    else:
+        k2 = 64
+
     if random.random() < prob1:
         # Player1 wins
-        p1.add_score(k * (1 - prob1))
-        p2.add_score(k * (0 - prob2))
+        p1.add_score(k1 * (1 - prob1))
+        p2.add_score(k2 * (0 - prob2))
     else:
         # Player2 wins
-        p1.add_score(k * (0 - prob1))
-        p2.add_score(k * (1 - prob2))
+        p1.add_score(k1 * (0 - prob1))
+        p2.add_score(k2 * (1 - prob2))
     # Update the time
     p1.add_played_time()
     p2.add_played_time()
     
-def export_csv(lst):
-    with open('output.csv', 'w') as f:
+def export_csv(lst, filename='output'):
+    filename += '.csv'
+    with open(filename, 'w') as f:
         f.write('ID,Initial Score,Current Score,Played Time,PlayingTimeStart,PlayingTimeEnd\n')
         for item in lst:
             f.write("%d,%d,%d,%d,%d,%d\n" % (item.id, item.init_score, item.score, item.time, item.stt_time, item.end_time))
