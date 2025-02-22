@@ -41,8 +41,6 @@ def avg_waiting_time(system_log:List[tuple]):
     Calculate the average waiting time of players in the queue
     """
     #name = "avg_waiting_time"
-    print(system_log)
-    print(len(system_log))
     waiting_time = 0
     for log in system_log:
         waiting_time += log[1] + log[2]
@@ -97,7 +95,6 @@ def run_simulation(player_num:int,
         lol.match()
     lol.save_log(matching_algorithm.__name__)
     game.export_csv(lol.players, matching_algorithm.__name__)
-    #print(lol.match_log)
     score = {}
     for criteria in criterion:
         score[criteria] = criteria(lol.match_log)
@@ -114,4 +111,3 @@ if __name__ == '__main__':
                 f.write(f"  {key.__name__}: {value}\n")
             
     print("Simulation completed")
-    
