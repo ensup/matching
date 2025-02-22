@@ -105,7 +105,7 @@ def run_simulation(player_num:int,
     return score
 if __name__ == '__main__':
     matching_algorithms = (find_optimal_1, find_optimal_2, find_optimal_3)
-    criterion = [avg_waiting_time, max_waiting_time, avg_score_gap]
+    criterion = [avg_waiting_time, max_waiting_time, avg_score_gap, max_score_gap]
     for matching_algorithm in matching_algorithms:
         res = run_simulation(15000, matching_algorithm, criterion)
         with open(f"{matching_algorithm.__name__}_result.txt", "w") as f:
