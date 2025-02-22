@@ -21,16 +21,14 @@ def find_optimal_2(queue:List[game.Player]):
         idx = 1
         if len(queue) > 2:
             for i in range(2, len(queue)):
-                if abs(queue[i].score-queue[0].score) > abs(queue[idx].score-queue[0].score):
+                if abs(queue[i].score-queue[0].score) < abs(queue[idx].score-queue[0].score):
                     idx = i
-            if(abs(queue[idx].score-queue[0].score) > 100):
-                break
+            if(abs(queue[idx].score-queue[0].score) < 100):
+                return idx
             else:
                 queue.dequeue()
         else:
-            idx = -1
-            break        
-    return idx
+            return -1
 def find_optimal_3(queue:List[game.Player]):
     """
     Randomly select the player to match with the first player in the queue
@@ -49,7 +47,7 @@ def avg_waiting_time(system_log:List[tuple]):
     for log in system_log:
         waiting_time += log[1] + log[2]
     if len(system_log) == 0:
-        return -1
+        return None
     else:
         return waiting_time/(len(system_log)*2)
 
