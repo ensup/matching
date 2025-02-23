@@ -2,7 +2,7 @@ import game
 import random
 from typing import List, Callable
 
-def find_optimal_1(queue:List[game.Player]):
+def find_optimal_1(queue:game.QueueList[game.Player]):
     """
     Find the optimal player to match with the first player in the queue
     """
@@ -12,7 +12,7 @@ def find_optimal_1(queue:List[game.Player]):
             idx = i
     return idx
 
-def find_optimal_2(queue:List[game.Player]):
+def find_optimal_2(queue:game.QueueList[game.Player]):
     """
     Find the optimal player to match with the first player in the queue
     If the difference between the first player and the optimal player is more than 100, delay the matching
@@ -29,7 +29,7 @@ def find_optimal_2(queue:List[game.Player]):
                 queue.dequeue()
         else:
             return -1
-def find_optimal_3(queue:List[game.Player]):
+def find_optimal_3(queue:game.QueueList[game.Player]):
     """
     Randomly select the player to match with the first player in the queue
     """
